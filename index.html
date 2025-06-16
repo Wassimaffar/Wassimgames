@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Very Terrifying Horror Game</title>
   <meta property="og:title" content="Very Terrifying Horror Game" />
   <meta property="og:description" content="A very scary and mysterious horror game. Not for the faint of heart." />
@@ -22,7 +22,7 @@
       text-align: center;
       overflow: hidden;
     }
-    #loading, #story, #jumpscare, #end, #review, #choice, #quiz, #fakehope {
+    #loading, #story, #jumpscare, #end, #review, #choice, #quiz, #fakehope, #creditsSection {
       display: none;
       margin-top: 20px;
     }
@@ -112,6 +112,13 @@
     <button onclick="showError()">Undo the heartbreak 💔</button>
     <button onclick="alert('Too late...')">Try again and fail harder</button>
     <p id="errorMsg" style="color: red; font-style: italic;"></p>
+    <button onclick="showCredits()">Credits</button>
+  </div>
+
+  <div id="creditsSection" class="fade-in">
+    <p style="font-size: 18px; color: pink;">
+      Made by your future husband, the love of your life, your safe place, your everything.
+    </p>
   </div>
 
   <audio id="bgMusic" loop>
@@ -124,6 +131,10 @@
 
   <audio id="suspenseSound">
     <source src="https://www.soundjay.com/horror/sounds/horror-atmosphere-01.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="calmMusic">
+    <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -159,7 +170,7 @@
             document.getElementById('choice').style.display = 'block';
           }, 4000);
         }
-      }, 2000); // allongé à 2s
+      }, 2000); // 2 sec entre chaque message
     }
 
     function userChose(yes) {
@@ -218,6 +229,14 @@
 
     function showError() {
       document.getElementById('errorMsg').innerText = 'System error: Heart not found.';
+    }
+
+    function showCredits() {
+      document.getElementById('creditsSection').style.display = 'block';
+      document.getElementById('creditsSection').classList.add('fade-in');
+      document.getElementById('bgMusic').pause();
+      document.getElementById('suspenseSound').pause();
+      document.getElementById('calmMusic').play();
     }
   </script>
 </body>
