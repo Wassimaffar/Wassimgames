@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Very Terrifying Horror Game</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    #story, #jumpscare, #end, #review {
+      display: none;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .fade-in {
+      animation: fadeIn 2s ease-in forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Very very terrifying horror game olala</h1>
+  <button onclick="startGame()">Play</button>
+
+  <div id="story" class="fade-in">
+    <p>Once upon a time, Wassim faced worlds and wonders to win the heart of Doha...</p>
+  </div>
+
+  <div id="jumpscare" class="fade-in">
+    <p>WARNING! Jumpscare incoming in 3...</p>
+  </div>
+
+  <div id="end" class="fade-in">
+    <p><strong>Wassim lost Doha.</strong></p>
+    <h2>The End</h2>
+  </div>
+
+  <div id="review" class="fade-in">
+    <p><em>"It was the scariest game of all my life, I cried for months." - Wassim</em></p>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <audio id="jumpscareSound">
+    <source src="https://www.soundjay.com/horror/sounds/scream-01.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <audio id="suspenseSound">
+    <source src="https://www.soundjay.com/horror/sounds/horror-atmosphere-01.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    function startGame() {
+      document.querySelector('button').style.display = 'none';
+      const story = document.getElementById('story');
+      const suspense = document.getElementById('suspenseSound');
+      document.getElementById('bgMusic').play();
+      suspense.play();
+
+      setTimeout(() => {
+        story.style.display = 'block';
+        story.classList.add('fade-in');
+
+        setTimeout(() => {
+          const jumpscare = document.getElementById('jumpscare');
+          jumpscare.style.display = 'block';
+          jumpscare.classList.add('fade-in');
+          countdown();
+        }, 5000); // delay before jumpscare
+      }, 3000); // delay before story appears
+    }
+
+    function countdown() {
+      let count = 3;
+      const jumpscare = document.getElementById('jumpscare');
+
+      const interval = setInterval(() => {
+        if (count === 0) {
+          clearInterval(interval);
+          jumpscare.innerHTML += '<br><strong>Wassim lost Doha.</strong>';
+          document.getElementById('jumpscareSound').play();
+
+          setTimeout(() => {
+            const end = document.getElementById('end');
+            end.style.display = 'block';
+            end.classList.add('fade-in');
+
+            setTimeout(() => {
+              const review = document.getElementById('review');
+              review.style.display = 'block';
+              review.classList.add('fade-in');
+            }, 4000);
+          }, 2000);
+        } else {
+          jumpscare.innerHTML += `<br>${count}...`;
+          count--;
+        }
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
