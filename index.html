@@ -79,9 +79,9 @@
   </div>
 
   <div id="choice">
-    <p>Do you want to continue?</p>
-    <button onclick="launchJumpscare()">Yes</button>
-    <button onclick="launchJumpscare()">No</button>
+    <p id="choiceText">Do you want to continue?</p>
+    <button onclick="userChose(true)">Yes</button>
+    <button onclick="userChose(false)">No</button>
   </div>
 
   <div id="jumpscare" class="fade-in">
@@ -159,7 +159,17 @@
             document.getElementById('choice').style.display = 'block';
           }, 4000);
         }
-      }, 1000);
+      }, 2000); // allongé à 2s
+    }
+
+    function userChose(yes) {
+      document.getElementById('choiceText').innerText = yes
+        ? "You are brave, good girl."
+        : "no fuck you you will keep going";
+
+      setTimeout(() => {
+        launchJumpscare();
+      }, 2000);
     }
 
     function launchJumpscare() {
