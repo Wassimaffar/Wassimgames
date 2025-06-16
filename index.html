@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Very Terrifying Horror Game</title>
+  <meta property="og:title" content="The Scariest Love Story Ever" />
+  <meta property="og:description" content="Wassim's terrifying quest for Doha's heart. Click if you dare." />
+  <meta property="og:image" content="https://i.imgur.com/xU4FPMn.jpeg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Emoji_u1f47b.svg/2048px-Emoji_u1f47b.svg.png">
   <style>
     body {
       background-color: black;
@@ -14,6 +20,7 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
+      overflow: hidden;
     }
     #story, #jumpscare, #end, #review {
       display: none;
@@ -33,6 +40,22 @@
       to {
         opacity: 1;
       }
+    }
+    .flash {
+      animation: flashAnim 0.4s linear;
+    }
+    @keyframes flashAnim {
+      0% { background-color: white; }
+      100% { background-color: black; }
+    }
+    .shake {
+      animation: shakeAnim 0.4s ease-in-out;
+    }
+    @keyframes shakeAnim {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-10px, 0); }
+      50% { transform: translate(10px, 0); }
+      75% { transform: translate(-10px, 0); }
     }
   </style>
 </head>
@@ -89,19 +112,25 @@
           jumpscare.style.display = 'block';
           jumpscare.classList.add('fade-in');
           countdown();
-        }, 5000); // delay before jumpscare
-      }, 3000); // delay before story appears
+        }, 5000);
+      }, 3000);
     }
 
     function countdown() {
       let count = 3;
       const jumpscare = document.getElementById('jumpscare');
+      const body = document.body;
 
       const interval = setInterval(() => {
         if (count === 0) {
           clearInterval(interval);
           jumpscare.innerHTML += '<br><strong>Wassim lost Doha.</strong>';
           document.getElementById('jumpscareSound').play();
+
+          body.classList.add('flash');
+          setTimeout(() => body.classList.remove('flash'), 400);
+          body.classList.add('shake');
+          setTimeout(() => body.classList.remove('shake'), 600);
 
           setTimeout(() => {
             const end = document.getElementById('end');
