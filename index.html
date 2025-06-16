@@ -2,105 +2,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Horror Game Ending</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Very Terrifying Horror Game</title>
+  <meta property="og:title" content="Very Terrifying Horror Game" />
+  <meta property="og:description" content="A very scary and mysterious horror game. Not for the faint of heart." />
+  <meta property="og:image" content="https://cdn.jsdelivr.net/gh/OpenAI-User/wassimgame-preview/wassim_game_preview.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Emoji_u1f47b.svg/2048px-Emoji_u1f47b.svg.png">
   <style>
     body {
       background-color: black;
       color: white;
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
-      padding: 40px;
+      overflow: hidden;
     }
-    #choice button, #ratingButtons button, #secretButton {
-      background-color: #333;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
-      font-size: 1em;
-      border-radius: 5px;
-    }
-    #secretButton {
+    #loading, #story, #jumpscare, #end, #review, #choice, #quiz, #fakehope {
+      display: none;
       margin-top: 20px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .fade-in {
+      animation: fadeIn 2s ease-in forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    .flash {
+      animation: flashAnim 0.4s linear;
+    }
+    @keyframes flashAnim {
+      0% { background-color: white; }
+      100% { background-color: black; }
+    }
+    .shake {
+      animation: shakeAnim 0.4s ease-in-out;
+    }
+    @keyframes shakeAnim {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-10px, 0); }
+      50% { transform: translate(10px, 0); }
+      75% { transform: translate(-10px, 0); }
+    }
+    .star-button {
+      background-color: #222;
+      color: white;
+      border: 1px solid white;
+      font-size: 18px;
+      margin: 5px;
     }
   </style>
 </head>
 <body>
+  <h1>Very very terrifying horror game olala</h1>
+  <button onclick="startGame()">Play</button>
 
-  <h1>The End?</h1>
-  <p id="wassimReview">Wassim's review: "A haunting experience... I felt things I wasn't ready to feel."</p>
-
-  <div id="ratingButtons" style="display:none;">
-    <p>Rate the game:</p>
-    <button onclick="submitRating(1)">★☆☆☆☆</button>
-    <button onclick="submitRating(2)">★★☆☆☆</button>
-    <button onclick="submitRating(3)">★★★☆☆</button>
-    <button onclick="submitRating(4)">★★★★☆</button>
-    <button onclick="submitRating(5)">★★★★★</button>
+  <div id="loading">
+    <p id="loadingText">Initializing...</p>
   </div>
 
-  <div id="finalButtons" style="display:none;">
-    <button onclick="tryAgain()">Try Again and Fail Harder</button>
-    <button onclick="undoHeartbreak()">Undo the Heartbreak</button>
-    <button id="secretButton" onclick="playSecretEnding()">Marry Wassim (secret ending)</button>
+  <div id="story" class="fade-in">
+    <p>Once upon a time, Wassim faced worlds and wonders to win the heart of Doha...</p>
   </div>
 
-  <audio id="secretMusic" src="calm_music.mp3" preload="auto"></audio>
+  <div id="choice">
+    <p>Do you want to continue?</p>
+    <button onclick="launchJumpscare()">Yes</button>
+    <button onclick="launchJumpscare()">No</button>
+  </div>
+
+  <div id="jumpscare" class="fade-in">
+    <p>WARNING! Jumpscare incoming in 3...</p>
+  </div>
+
+  <div id="end" class="fade-in">
+    <p><strong>Wassim lost Doha.</strong></p>
+    <h2>The End</h2>
+  </div>
+
+  <div id="review" class="fade-in">
+    <p><em>"It was the scariest game of all my life, I cried for months." - Wassim</em></p>
+  </div>
+
+  <div id="quiz" class="fade-in">
+    <p>Rate your trauma:</p>
+    <div>
+      <button class="star-button" onclick="showFinalOptions()">⭐</button>
+      <button class="star-button" onclick="showFinalOptions()">⭐⭐</button>
+      <button class="star-button" onclick="showFinalOptions()">⭐⭐⭐</button>
+      <button class="star-button" onclick="showFinalOptions()">⭐⭐⭐⭐</button>
+      <button class="star-button" onclick="showFinalOptions()">⭐⭐⭐⭐⭐ (Wassim level)</button>
+    </div>
+  </div>
+
+  <div id="fakehope" class="fade-in">
+    <button onclick="showError()">Undo the heartbreak 💔</button>
+    <button onclick="alert('Too late...')">Try again and fail harder</button>
+    <p id="errorMsg" style="color: red; font-style: italic;"></p>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="jumpscareSound">
+    <source src="https://www.soundjay.com/horror/sounds/scream-01.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="suspenseSound">
+    <source src="https://www.soundjay.com/horror/sounds/horror-atmosphere-01.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
-    // Simulation: afficher les boutons après 3 secondes
-    setTimeout(() => {
-      document.getElementById('ratingButtons').style.display = 'block';
-    }, 3000);
+    const loadingTexts = [
+      'Initializing Fear Engine...',
+      'Loading textures of terror...',
+      'Summoning digital ghosts...',
+      'Establishing emotional trauma...',
+      'Preparing heartbreak...',
+      'Finalizing nightmare...',
+      '99% Complete...'
+    ];
 
-    function submitRating(stars) {
-      const review = document.getElementById('wassimReview');
-      review.innerText += `\n\nYou rated this ${stars} star${stars > 1 ? 's' : ''}.`;
-      document.getElementById('ratingButtons').style.display = 'none';
-      setTimeout(() => {
-        document.getElementById('finalButtons').style.display = 'block';
-      }, 2000);
+    function startGame() {
+      document.querySelector('button').style.display = 'none';
+      const loading = document.getElementById('loading');
+      const loadingText = document.getElementById('loadingText');
+      loading.style.display = 'block';
+
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < loadingTexts.length) {
+          loadingText.innerText = loadingTexts[index];
+          index++;
+        } else {
+          clearInterval(interval);
+          loading.style.display = 'none';
+          document.getElementById('story').style.display = 'block';
+          document.getElementById('story').classList.add('fade-in');
+          document.getElementById('bgMusic').play();
+          document.getElementById('suspenseSound').play();
+          setTimeout(() => {
+            document.getElementById('choice').style.display = 'block';
+          }, 4000);
+        }
+      }, 1000);
     }
 
-    function tryAgain() {
-      alert("You try again... and fail again.");
+    function launchJumpscare() {
+      document.getElementById('choice').style.display = 'none';
+      const jumpscare = document.getElementById('jumpscare');
+      jumpscare.style.display = 'block';
+      jumpscare.classList.add('fade-in');
+      countdown();
     }
 
-    function undoHeartbreak() {
-      alert("You wish you could undo the heartbreak... but some wounds never heal.");
+    function countdown() {
+      let count = 3;
+      const jumpscare = document.getElementById('jumpscare');
+      const body = document.body;
+
+      const interval = setInterval(() => {
+        if (count === 0) {
+          clearInterval(interval);
+          jumpscare.innerHTML += '<br><strong>Wassim lost Doha.</strong>';
+          document.getElementById('jumpscareSound').play();
+          body.classList.add('flash');
+          setTimeout(() => body.classList.remove('flash'), 400);
+          body.classList.add('shake');
+          setTimeout(() => body.classList.remove('shake'), 600);
+
+          setTimeout(() => {
+            document.getElementById('end').style.display = 'block';
+            document.getElementById('review').style.display = 'block';
+            setTimeout(() => {
+              document.getElementById('end').style.display = 'none';
+              document.getElementById('review').style.display = 'none';
+              document.getElementById('quiz').style.display = 'block';
+            }, 4000);
+          }, 2000);
+        } else {
+          jumpscare.innerHTML += `<br>${count}...`;
+          count--;
+        }
+      }, 1500);
     }
 
-    function playSecretEnding() {
-      document.body.innerHTML = '';
-      const music = document.getElementById('secretMusic');
-      if (music) music.play();
+    function showFinalOptions() {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('fakehope').style.display = 'block';
+    }
 
-      document.body.style.backgroundColor = '#111';
-      document.body.style.color = '#fff';
-      document.body.style.fontFamily = 'serif';
-      document.body.style.display = 'flex';
-      document.body.style.flexDirection = 'column';
-      document.body.style.alignItems = 'center';
-      document.body.style.justifyContent = 'center';
-      document.body.style.height = '100vh';
-      document.body.style.textAlign = 'center';
-      document.body.style.padding = '20px';
-
-      const msg = document.createElement('div');
-      msg.innerHTML = `
-        <h1 style="font-size: 2.5em; margin-bottom: 20px;">You chose the secret ending…</h1>
-        <p style="font-size: 1.4em; max-width: 700px;">
-          You chose love. You chose courage. You chose Wassim.
-          <br><br>
-          From this day forward, your destiny is sealed with warmth and tenderness.
-          <br><br>
-          Send <strong>"french cat"</strong> to Wassim now… your reward awaits.
-        </p>
-      `;
-      document.body.appendChild(msg);
+    function showError() {
+      document.getElementById('errorMsg').innerText = 'System error: Heart not found.';
     }
   </script>
-
 </body>
 </html>
